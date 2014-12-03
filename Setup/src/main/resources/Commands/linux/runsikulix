@@ -16,11 +16,28 @@ else
 fi
 
 if [ -e "$shome/$sjar.jar" ]; then
-	export SIKULI_COMMAND=$*
-	echo "running SikuliX: $PROPS"
-	echo "-jar $shome/$sjar.jar $SIKULI_COMMAND"
-	"$JAVABIN" $PROPS -jar "$shome/$sjar.jar" $SIKULI_COMMAND
+
+  args_quoted=""
+  whitespace="[[:space:]]"
+  for i in "$@"
+  do
+    if [[ $i =~ $whitespace ]]
+    then
+        i=\"$i\"
+    fi
+        args_quoted="$args_quoted $i"
+    #echo "---- $i"
+  done
+
+  #echo "---- args_quoted: $args_quoted"
+
+  export SIKULI_COMMAND=$args_quoted
+
+  #export SIKULI_COMMAND=$*
+
+  echo "running SikuliX: $PROPS"
+  echo "-jar $shome/$sjar.jar $SIKULI_COMMAND"
+  "$JAVABIN" $PROPS -jar "$shome/$sjar.jar" $SIKULI_COMMAND
 else
   echo "Error: terminating: $sjar.jar not found at: "$shome
 fi
-
