@@ -43,7 +43,23 @@ if [ -e "$shome/$sjar.jar" ]; then
     java -version
   fi
 
-  export SIKULI_COMMAND=$*
+
+  args_quoted=""
+  whitespace="[[:space:]]"
+  for i in "$@"
+  do
+    if [[ $i =~ $whitespace ]]
+    then
+        i=\"$i\"
+    fi
+        args_quoted="$args_quoted $i"
+    #echo "---- $i"
+  done
+
+  #echo "---- args_quoted: $args_quoted"
+
+  export SIKULI_COMMAND=$args_quoted
+  #export SIKULI_COMMAND=$*
   echo "running SikuliX-IDE: $PROPS"
   echo "-jar $shome/$sjar.jar $SIKULI_COMMAND"
   java $PROPS -jar "$shome/$sjar.jar" $SIKULI_COMMAND
